@@ -1,0 +1,20 @@
+{
+  "name": "lru-events",
+  "version": "1.0.0",
+  "description": "LRU cache with event hooks and expiryIfUnused",
+  "main": "source.js",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mLuby/lru-events.git"
+  },
+  "keywords": [],
+  "author": "Mike Luby <Michael@mLuby.com> (https://github.com/mLuby)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mLuby/lru-events/issues"
+  },
+  "homepage": "https://github.com/mLuby/lru-events#readme"
+}

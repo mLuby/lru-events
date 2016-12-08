@@ -51,6 +51,7 @@ function makeLRU (userOptions) {
   }
 
   function length () {
+    trigger("peek", undefined, lruLength)
     return lruLength
   }
 

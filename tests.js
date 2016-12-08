@@ -1,4 +1,4 @@
-function expect (message, actual, expected) { console.log(actual === expected ? "√" : "X", message || "", actual, expected) }
+function expect (message, actual, expected) { console.log(actual === expected ? "√" : "X", message || "", actual, expected); if (actual !== expected) { process.exit(1) } }
 
 const makeLRU = require("./source")
 
