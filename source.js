@@ -7,7 +7,7 @@ function makeLRU (userOptions) {
   var eventsToCallbacks = {}
   userOptions = userOptions || {}
   var options = {
-    // TODO maxAge: userOptions.maxAge || Infinity, // ms
+    expiryIfUnused: userOptions.expiryIfUnused || Infinity,
     max: userOptions.max || 1000,
   }
 
@@ -35,11 +35,17 @@ function makeLRU (userOptions) {
 
   function get (key) {
     var link = keysToLinks[key]
-    var value = link && link.value
     var keyExists = Boolean(link)
     if (keyExists) {
-      makeMostRecent(link)
+      var expired = link.lastUsedAt + options.expiryIfUnused < Date.now()
+      if (expired) {
+        remove(link)
+        link = undefined
+      } else {
+        makeMostRecent(link)
+      }
     }
+    var value = link && link.value
     trigger("get", key, value)
     return value
   }
@@ -104,6 +110,7 @@ function makeLRU (userOptions) {
   }
 
   function makeMostRecent (link) {
+    link.lastUsedAt = Date.now()
     removeLinkFromList(link)
     addLinkToHead(link)
   }
@@ -119,6 +126,7 @@ function makeLRU (userOptions) {
       lessRecent: null,
       moreRecent: null,
       value: null,
+      lastUsedAt: Date.now(),
     }
   }
 

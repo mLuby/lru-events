@@ -50,3 +50,20 @@ smallLru.set("b", "B")
 smallLru.peek("a")
 smallLru.set("c", "C")
 expect("peek does not change most recently used", smallLru.get("a"), undefined)
+
+var timedLru1 = makeLRU({max: 2, expiryIfUnused: 400})
+timedLru1.set("a", "A") // t=0
+timedLru1.set("b", "B")
+setTimeout(function () {
+  expect("touched values not expired", timedLru1.get("a"), "A") // t=100
+  expect("untouched values not expired", timedLru1.peek("b"), "B")
+}, 300)
+// t=400 b expires
+setTimeout(function () {
+  expect("touched value not expired", timedLru1.peek("a"), "A") // t=500
+  expect("untouched value expired", timedLru1.get("b"), undefined)
+}, 500)
+// t=900 a expires
+setTimeout(function () {
+  expect("value expired", timedLru1.get("a"), undefined) // t=2500
+}, 1000)
